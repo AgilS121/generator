@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Sales Data Generator - Improved</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const PhoneDataGenerator = () => {
+            const [rowCount, setRowCount] = useState(2000);
+            const [generatedData, setGeneratedData] = useState([]);
+            const [isGenerating, setIsGenerating] = useState(false);
+            const [salesDistribution, setSalesDistribution] = useState({
+                'iPhone': { 2020: 250, 2021: 280, 2022: 300, 2023: 320, 2024: 350, 2025: 300 },
+                'Samsung': { 2020: 300, 2021: 320, 2022: 350, 2023: 380, 2024: 400, 2025: 380 },
+                'Xiaomi': { 2020: 400, 2021: 450, 2022: 500, 2023: 550, 2024: 600, 2025: 580 },
+                'Oppo': { 2020: 200, 2021: 220, 2022: 250, 2023: 280, 2024: 300, 2025: 280 },
+                'Vivo': { 2020: 180, 2021: 200, 2022: 230, 2023: 260, 2024: 290, 2025: 270 },
+                'Realme': { 2020: 150, 2021: 180, 2022: 220, 2023: 250, 2024: 280, 2025: 150 }
+            });
+
+            // Data harga dari Excel (dalam rupiah)
+            const priceData = {
+                'iPhone': {
+                    'iPhone 7': { 2020: 3800000, 2021: 3100000, 2022: 2600000, 2023: 2200000, 2024: 1900000, 2025: 1700000 },
+                    'iPhone 7 Plus': { 2020: 4500000, 2021: 3800000, 2022: 3200000, 2023: 2800000, 2024: 2500000, 2025: 2200000 },
+                    'iPhone 8': { 2020: 4800000, 2021: 4000000, 2022: 3400000, 2023: 2900000, 2024: 2600000, 2025: 2300000 },
+                    'iPhone 8 Plus': { 2020: 5500000, 2021: 4700000, 2022: 4000000, 2023: 3500000, 2024: 3100000, 2025: 2800000 },
+                    'iPhone X': { 2020: 6500000, 2021: 5500000, 2022: 4800000, 2023: 4200000, 2024: 3800000, 2025: 3400000 },
+                    'iPhone XS': { 2020: 8000000, 2021: 6800000, 2022: 5900000, 2023: 5100000, 2024: 4600000, 2025: 4100000 },
+                    'iPhone XS Max': { 2020: 9000000, 2021: 7800000, 2022: 6800000, 2023: 6000000, 2024: 5400000, 2025: 4900000 },
+                    'iPhone XR': { 2020: 7500000, 2021: 6500000, 2022: 5500000, 2023: 4800000, 2024: 4300000, 2025: 3800000 },
+                    'iPhone 11': { 2020: 11500000, 2021: 10000000, 2022: 8500000, 2023: 7000000, 2024: 6000000, 2025: 5000000 },
+                    'iPhone 11 Pro': { 2020: 15000000, 2021: 12500000, 2022: 10500000, 2023: 8800000, 2024: 7500000, 2025: 6500000 },
+                    'iPhone 11 Pro Max': { 2020: 16500000, 2021: 14000000, 2022: 12000000, 2023: 10000000, 2024: 8500000, 2025: 7500000 },
+                    'iPhone 12 Mini': { 2021: 12999000, 2022: 11000000, 2023: 9000000, 2024: 7500000, 2025: 6500000 },
+                    'iPhone 12': { 2021: 14999000, 2022: 13000000, 2023: 11000000, 2024: 9500000, 2025: 8000000 },
+                    'iPhone 12 Pro': { 2021: 18499000, 2022: 16500000, 2023: 14000000, 2024: 12000000, 2025: 10500000 },
+                    'iPhone 12 Pro Max': { 2021: 20499000, 2022: 18500000, 2023: 16000000, 2024: 14000000, 2025: 12000000 },
+                    'iPhone 13 Mini': { 2021: 12999000, 2022: 11500000, 2023: 10000000, 2024: 8500000, 2025: 7500000 },
+                    'iPhone 13': { 2021: 14999000, 2022: 13500000, 2023: 12000000, 2024: 10000000, 2025: 7699000 },
+                    'iPhone 13 Pro': { 2021: 18499000, 2022: 16800000, 2023: 14500000, 2024: 12800000, 2025: 11500000 },
+                    'iPhone 13 Pro Max': { 2021: 19999000, 2022: 18200000, 2023: 16000000, 2024: 14200000, 2025: 12800000 },
+                    'iPhone 14': { 2022: 15999000, 2023: 14000000, 2024: 11500000, 2025: 9699000 },
+                    'iPhone 14 Pro': { 2022: 19999000, 2023: 18000000, 2024: 16500000, 2025: 15000000 },
+                    'iPhone 14 Pro Max': { 2022: 21999000, 2023: 20000000, 2024: 18000000, 2025: 16500000 },
+                    'iPhone 15': { 2023: 16499000, 2024: 14500000, 2025: 11499000 },
+                    'iPhone 15 Plus': { 2023: 18499000, 2024: 16500000, 2025: 13499000 },
+                    'iPhone 15 Pro': { 2023: 20999000, 2024: 19000000, 2025: 17500000 },
+                    'iPhone 15 Pro Max': { 2023: 24999000, 2024: 22500000, 2025: 20000000 },
+                    'iPhone 16': { 2024: 16999000, 2025: 14499000 },
+                    'iPhone 16 Plus': { 2024: 18999000, 2025: 16499000 },
+                    'iPhone 16 Pro': { 2024: 21999000, 2025: 17999000 },
+                    'iPhone 16 Pro Max': { 2024: 25999000, 2025: 21999000 }
+                },
+                'Samsung': {
+                    'Galaxy A51': { 2020: 4399000, 2021: 3500000, 2022: 2800000, 2023: 2200000, 2024: 1800000, 2025: 1500000 },
+                    'Galaxy M21': { 2020: 3199000, 2021: 2500000, 2022: 2000000, 2023: 1600000, 2024: 1300000, 2025: 1000000 },
+                    'Galaxy S20 FE': { 2020: 9999000, 2021: 7500000, 2022: 6000000, 2023: 4500000, 2024: 3500000, 2025: 2800000 },
+                    'Galaxy A12': { 2021: 2499000, 2022: 1900000, 2023: 1500000, 2024: 1200000, 2025: 900000 },
+                    'Galaxy A52': { 2021: 4999000, 2022: 4000000, 2023: 3200000, 2024: 2700000, 2025: 2300000 },
+                    'Galaxy A32': { 2021: 3599000, 2022: 2900000, 2023: 2400000, 2024: 2000000, 2025: 1700000 },
+                    'Galaxy S21 FE': { 2021: 8999000, 2022: 7500000, 2023: 6000000, 2024: 5000000, 2025: 4200000 },
+                    'Galaxy Z Flip3': { 2021: 14999000, 2022: 10000000, 2023: 7500000, 2024: 6000000, 2025: 4800000 },
+                    'Galaxy A03': { 2022: 1599000, 2023: 1300000, 2024: 1000000, 2025: 800000 },
+                    'Galaxy A33 5G': { 2022: 4699000, 2023: 3800000, 2024: 3100000, 2025: 2600000 },
+                    'Galaxy A23': { 2022: 3299000, 2023: 2700000, 2024: 2200000, 2025: 1800000 },
+                    'Galaxy S22 Ultra': { 2022: 17999000, 2023: 15000000, 2024: 12000000, 2025: 10000000 },
+                    'Galaxy Z Flip4': { 2022: 13999000, 2023: 10500000, 2024: 8000000, 2025: 6500000 },
+                    'Galaxy A14': { 2023: 2399000, 2024: 2000000, 2025: 1700000 },
+                    'Galaxy A54 5G': { 2023: 5999000, 2024: 5000000, 2025: 4300000 },
+                    'Galaxy S23 Ultra': { 2023: 19999000, 2024: 17000000, 2025: 14500000 },
+                    'Galaxy A15': { 2024: 2899000, 2025: 2400000 }
+                },
+                'Xiaomi': {
+                    'Redmi Note 8': { 2020: 2099000, 2021: 1600000, 2022: 1200000, 2023: 900000, 2024: 700000, 2025: 500000 },
+                    'Redmi 9A': { 2020: 1249000, 2021: 1000000, 2022: 800000, 2023: 650000, 2024: 500000 },
+                    'Redmi Note 9': { 2020: 2499000, 2021: 1900000, 2022: 1500000, 2023: 1200000, 2024: 1000000, 2025: 800000 },
+                    'Poco X3 NFC': { 2020: 3199000, 2021: 2800000, 2022: 2300000, 2023: 1900000, 2024: 1600000, 2025: 1300000 },
+                    'Redmi Note 10': { 2021: 2499000, 2022: 2000000, 2023: 1700000, 2024: 1400000, 2025: 1100000 },
+                    'Redmi Note 10 Pro': { 2021: 3499000, 2022: 2700000, 2023: 2200000, 2024: 1800000, 2025: 1500000 },
+                    'Redmi 10C': { 2022: 1899000, 2023: 1500000, 2024: 1200000, 2025: 1000000 },
+                    'Redmi Note 11': { 2022: 2499000, 2023: 2000000, 2024: 1700000, 2025: 1400000 },
+                    'Redmi Note 11 Pro': { 2022: 3499000, 2023: 2800000, 2024: 2300000, 2025: 1900000 },
+                    'Redmi 12C': { 2023: 1399000, 2024: 1100000, 2025: 900000 },
+                    'Redmi Note 12': { 2023: 2599000, 2024: 2100000, 2025: 1800000 },
+                    'Poco F5': { 2023: 4999000, 2024: 4000000, 2025: 3400000 },
+                    'Redmi 13C': { 2024: 1499000, 2025: 1200000 },
+                    'Redmi Note 13': { 2024: 2799000, 2025: 2300000 },
+                    'Redmi Note 13 Pro 5G': { 2024: 4399000, 2025: 3700000 }
+                },
+                'Oppo': {
+                    'A53': { 2020: 2499000, 2021: 1900000, 2022: 1500000, 2023: 1200000, 2024: 900000, 2025: 700000 },
+                    'A16': { 2021: 1999000, 2022: 1600000, 2023: 1300000, 2024: 1000000, 2025: 800000 },
+                    'Reno6': { 2021: 5199000, 2022: 4000000, 2023: 3100000, 2024: 2500000, 2025: 2000000 },
+                    'A57': { 2022: 2699000, 2023: 2100000, 2024: 1700000, 2025: 1400000 },
+                    'A77s': { 2022: 3499000, 2023: 2800000, 2024: 2300000, 2025: 1900000 },
+                    'Reno8 T': { 2023: 4899000, 2024: 3900000, 2025: 3200000 },
+                    'A78 5G': { 2023: 3999000, 2024: 3200000, 2025: 2700000 },
+                    'Reno10': { 2023: 5999000, 2024: 4800000, 2025: 4100000 },
+                    'A18': { 2023: 1799000, 2024: 1400000, 2025: 1100000 },
+                    'A58': { 2023: 2499000, 2024: 2000000, 2025: 1700000 }
+                },
+                'Vivo': {
+                    'Y20s': { 2020: 3099000, 2021: 2500000, 2022: 1900000, 2023: 1500000, 2024: 1200000, 2025: 900000 },
+                    'Y21s': { 2021: 2799000, 2022: 2200000, 2023: 1800000, 2024: 1500000, 2025: 1200000 },
+                    'V23e': { 2021: 4399000, 2022: 3500000, 2023: 2800000, 2024: 2300000, 2025: 1900000 },
+                    'Y22': { 2022: 2399000, 2023: 1900000, 2024: 1600000, 2025: 1300000 },
+                    'Y35': { 2022: 3399000, 2023: 2700000, 2024: 2200000, 2025: 1800000 },
+                    'V25e': { 2022: 3999000, 2023: 3200000, 2024: 2600000, 2025: 2100000 },
+                    'Y17s': { 2023: 1999000, 2024: 1600000, 2025: 1300000 },
+                    'V27 5G': { 2023: 5999000, 2024: 4800000, 2025: 4000000 },
+                    'V29e': { 2023: 4399000, 2024: 3600000, 2025: 3000000 },
+                    'Y100 5G': { 2024: 3899000, 2025: 3200000 }
+                },
+                'Realme': {
+                    'C15': { 2020: 1999000, 2021: 1500000, 2022: 1200000, 2023: 900000, 2024: 700000 },
+                    '8': { 2021: 3599000, 2022: 2800000, 2023: 2300000, 2024: 1900000, 2025: 1600000 },
+                    'C35': { 2022: 2299000, 2023: 1800000, 2024: 1500000, 2025: 1200000 },
+                    'Narzo 50': { 2022: 2499000, 2023: 2000000, 2024: 1600000, 2025: 1300000 },
+                    '9 Pro': { 2022: 3799000, 2023: 2900000, 2024: 2400000, 2025: 2000000 },
+                    'C55': { 2023: 2499000, 2024: 2000000, 2025: 1700000 },
+                    '10 Pro+': { 2023: 5999000, 2024: 4500000, 2025: 3600000 },
+                    'C53': { 2023: 1999000, 2024: 1600000, 2025: 1300000 },
+                    '11 Pro': { 2023: 5599000, 2024: 4400000, 2025: 3700000 },
+                    'C67': { 2024: 2599000, 2025: 2100000 }
+                }
+            };
+
+            const colors = [
+                'Midnight Black', 'Ocean Blue', 'Champion Gold', 'Mint Green', 'Stripe Blue', 
+                'Denim Black', 'Sunrise Orange', 'Twilight Purple', 'Pearl White', 'Rose Gold',
+                'Cosmic Blue', 'Phantom Silver', 'Aurora Green', 'Crimson Red', 'Mystic Bronze'
+            ];
+
+            const memoryOptions = [
+                { ram: 3, storage: 32 },
+                { ram: 4, storage: 64 },
+                { ram: 4, storage: 128 },
+                { ram: 6, storage: 128 },
+                { ram: 8, storage: 256 },
+                { ram: 12, storage: 256 },
+                { ram: 12, storage: 512 }
+            ];
+
+            const generateRandomDate = (year) => {
+                const startDate = new Date(year, 0, 1);
+                const endDate = year === 2025 ? new Date(2025, 5, 30) : new Date(year, 11, 31);
+                const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
+                return new Date(randomTime);
+            };
+
+            const formatDate = (date) => {
+                return date.toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            };
+
+            const getRetailPrice = (brand, model, year) => {
+                const brandData = priceData[brand];
+                if (!brandData || !brandData[model] || !brandData[model][year]) {
+                    return 0;
+                }
+                
+                const launchPrice = brandData[model][year];
+                // Retail markup 15-25% dari harga launch
+                const markupMultiplier = 1.15 + Math.random() * 0.1;
+                const retailPrice = launchPrice * markupMultiplier;
+                
+                // Variasi harga ±5%
+                const priceVariation = 0.95 + Math.random() * 0.1;
+                
+                return Math.round(retailPrice * priceVariation / 50000) * 50000;
+            };
+
+            const getAvailableModels = (brand, year) => {
+                const brandData = priceData[brand];
+                if (!brandData) return [];
+                
+                return Object.keys(brandData).filter(model => 
+                    brandData[model][year] !== undefined
+                );
+            };
+
+            const updateSalesDistribution = (brand, year, value) => {
+                setSalesDistribution(prev => ({
+                    ...prev,
+                    [brand]: {
+                        ...prev[brand],
+                        [year]: parseInt(value)
+                    }
+                }));
+            };
+
+            const generateData = () => {
+                setIsGenerating(true);
+                
+                setTimeout(() => {
+                    const data = [];
+                    const yearlyData = {};
+                    
+                    // Group by year untuk distribusi
+                    const years = [2020, 2021, 2022, 2023, 2024, 2025];
+                    years.forEach(year => {
+                        yearlyData[year] = [];
+                        
+                        // Generate data untuk setiap brand berdasarkan distribusi
+                        Object.keys(salesDistribution).forEach(brand => {
+                            const yearlyCount = salesDistribution[brand][year] || 0;
+                            const availableModels = getAvailableModels(brand, year);
+                            
+                            if (availableModels.length === 0) return;
+                            
+                            for (let i = 0; i < yearlyCount; i++) {
+                                const model = availableModels[Math.floor(Math.random() * availableModels.length)];
+                                const color = colors[Math.floor(Math.random() * colors.length)];
+                                const memoryConfig = memoryOptions[Math.floor(Math.random() * memoryOptions.length)];
+                                const date = generateRandomDate(year);
+                                const price = getRetailPrice(brand, model, year);
+                                
+                                if (price > 0) {
+                                    const fullModel = `${model} ${memoryConfig.ram}/${memoryConfig.storage}`;
+                                    const mobile = `${brand} ${fullModel} ${color}`;
+                                    
+                                    yearlyData[year].push({
+                                        Brand: brand,
+                                        Model: model,
+                                        Color: color,
+                                        'Selling Price': price,
+                                        Mobile: mobile,
+                                        Date: formatDate(date),
+                                        Memory: memoryConfig.ram,
+                                        Storage: memoryConfig.storage,
+                                        Year: year
+                                    });
+                                }
+                            }
+                        });
+                    });
+                    
+                    // Flatten dan sort semua data
+                    const allData = [];
+                    years.forEach(year => {
+                        allData.push(...yearlyData[year]);
+                    });
+                    
+                    allData.sort((a, b) => new Date(a.Date.split('/').reverse().join('-')) - new Date(b.Date.split('/').reverse().join('-')));
+                    
+                    // Ambil sesuai rowCount
+                    const finalData = allData.slice(0, rowCount);
+                    
+                    setGeneratedData(finalData);
+                    setIsGenerating(false);
+                }, 100);
+            };
+
+            const downloadCSV = () => {
+                if (generatedData.length === 0) return;
+                
+                const headers = ['Brand', 'Model', 'Color', 'Selling Price', 'Mobile', 'Date', 'Memory', 'Storage'];
+                const csvContent = [
+                    headers.join(';'),
+                    ...generatedData.map(row => headers.map(header => row[header]).join(';'))
+                ].join('\n');
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `phone_sales_data_${rowCount}_rows.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
+            return (
+                <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+                            📱 Phone Sales Data Generator - Improved
+                        </h2>
+                        <p className="text-gray-600">Generate realistic phone sales data dengan harga retail berdasarkan launching price dan distribusi penjualan custom</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                            <h3 className="font-semibold mb-2">Data Configuration</h3>
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Number of Rows
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={rowCount}
+                                        onChange={(e) => setRowCount(parseInt(e.target.value))}
+                                        min="100"
+                                        max="50000"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <button
+                                    onClick={generateData}
+                                    disabled={isGenerating}
+                                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 flex items-center justify-center gap-2"
+                                >
+                                    {isGenerating ? (
+                                        <>
+                                            <div className="spinner"></div>
+                                            Generating...
+                                        </>
+                                    ) : (
+                                        <>
+                                            🔄 Generate Data
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                            <h3 className="font-semibold mb-2">Sales Distribution per Year</h3>
+                            <div className="space-y-2 max-h-64 overflow-y-auto">
+                                {Object.keys(salesDistribution).map(brand => (
+                                    <div key={brand} className="border-b pb-2">
+                                        <div className="font-medium text-sm mb-1">{brand}</div>
+                                        <div className="grid grid-cols-3 gap-1">
+                                            {[2020, 2021, 2022, 2023, 2024, 2025].map(year => (
+                                                <div key={year} className="text-xs">
+                                                    <label className="block">{year}</label>
+                                                    <input
+                                                        type="number"
+                                                        value={salesDistribution[brand][year]}
+                                                        onChange={(e) => updateSalesDistribution(brand, year, e.target.value)}
+                                                        className="w-full px-1 py-1 border rounded text-xs"
+                                                        min="0"
+                                                        max="1000"
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                            <h3 className="font-semibold mb-2">Features</h3>
+                            <ul className="text-sm text-gray-600 space-y-1">
+                                <li>• Harga retail mengikuti launching price dari Excel</li>
+                                <li>• Model HP sesuai dengan yang ada di Excel</li>
+                                <li>• Distribusi penjualan per brand dapat disesuaikan</li>
+                                <li>• Variasi warna dan konfigurasi memori</li>
+                                <li>• Format tanggal Indonesia (DD/MM/YYYY)</li>
+                                <li>• Rentang data dari 2020-2025 (hingga Juni)</li>
+                            </ul>
+                        </div>
+
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                            <h3 className="font-semibold mb-2">Data Summary</h3>
+                            {generatedData.length > 0 ? (
+                                <div className="text-sm text-gray-600 space-y-1">
+                                    <div>Total Records: <span className="font-medium">{generatedData.length}</span></div>
+                                    <div>Price Range: <span className="font-medium">
+                                        Rp {Math.min(...generatedData.map(d => d['Selling Price'])).toLocaleString('id-ID')} - 
+                                        Rp {Math.max(...generatedData.map(d => d['Selling Price'])).toLocaleString('id-ID')}
+                                    </span></div>
+                                    <div>Brands: <span className="font-medium">
+                                        {[...new Set(generatedData.map(d => d.Brand))].join(', ')}
+                                    </span></div>
+                                    <div>Date Range: <span className="font-medium">
+                                        {generatedData.length > 0 ? 
+                                            `${generatedData[0].Date} - ${generatedData[generatedData.length - 1].Date}` : 
+                                            'N/A'
+                                        }
+                                    </span></div>
+                                </div>
+                            ) : (
+                                <div className="text-sm text-gray-500">
+                                    Generate data to see summary
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {generatedData.length > 0 && (
+                        <div className="mb-6">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="font-semibold">Generated Data Preview</h3>
+                                <button
+                                    onClick={downloadCSV}
+                                    className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center gap-2"
+                                >
+                                    📥 Download CSV
+                                </button>
+                            </div>
+                            <div className="bg-white border rounded-lg overflow-hidden">
+                                <div className="overflow-x-auto max-h-96">
+                                    <table className="w-full text-sm">
+                                        <thead className="bg-gray-100 sticky top-0">
+                                            <tr>
+                                                <th className="px-4 py-2 text-left">Brand</th>
+                                                <th className="px-4 py-2 text-left">Model</th>
+                                                <th className="px-4 py-2 text-left">Color</th>
+                                                <th className="px-4 py-2 text-left">Price</th>
+                                                <th className="px-4 py-2 text-left">Memory</th>
+                                                <th className="px-4 py-2 text-left">Storage</th>
+                                                <th className="px-4 py-2 text-left">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {generatedData.slice(0, 50).map((row, index) => (
+                                                <tr key={index} className="border-b hover:bg-gray-50">
+                                                    <td className="px-4 py-2">{row.Brand}</td>
+                                                    <td className="px-4 py-2">{row.Model}</td>
+                                                    <td className="px-4 py-2">{row.Color}</td>
+                                                    <td className="px-4 py-2">Rp {row['Selling Price'].toLocaleString('id-ID')}</td>
+                                                    <td className="px-4 py-2">{row.Memory}GB</td>
+                                                    <td className="px-4 py-2">{row.Storage}GB</td>
+                                                    <td className="px-4 py-2">{row.Date}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {generatedData.length > 50 && (
+                                    <div className="px-4 py-2 bg-gray-50 text-sm text-gray-600 text-center">
+                                        Showing first 50 of {generatedData.length} records. Download CSV for complete data.
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                        <h3 className="font-semibold mb-2 text-blue-800">📊 Data Structure</h3>
+                        <div className="text-sm text-blue-700">
+                            <p className="mb-2">CSV akan menghasilkan kolom-kolom berikut:</p>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <div>• Brand</div>
+                                <div>• Model</div>
+                                <div>• Color</div>
+                                <div>• Selling Price</div>
+                                <div>• Mobile (Full Name)</div>
+                                <div>• Date</div>
+                                <div>• Memory (RAM)</div>
+                                <div>• Storage</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<PhoneDataGenerator />, document.getElementById('root'));
+    </script>
+    <footer style="text-align: center; margin-top: 50px;">
+        <small>Created by Agil Pamungkas • © 2025</small>
+    </footer>
+
+</body>
+</html>
