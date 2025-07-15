@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Template Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        .sheet-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+        .sheet-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto p-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Excel Template Generator</h1>
+                <p class="text-lg text-gray-600">Template untuk Dynamic Phone Sales Data Generator</p>
+            </div>
+
+            <div class="text-center mb-8">
+                <button onclick="generateExcel()" class="download-btn text-white px-8 py-4 rounded-lg font-semibold text-lg inline-flex items-center gap-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Download Template Excel
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Price Data Sheet -->
+                <div class="sheet-card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">Sheet 1</span>
+                        Price Data
+                    </h3>
+                    <div class="text-sm text-gray-600 mb-4">
+                        Berisi data harga produk per tahun untuk setiap brand dan model
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <div class="text-xs font-mono">
+                            <div class="font-semibold mb-2">Struktur:</div>
+                            <div>Model | 2020 | 2021 | 2022 | 2023 | 2024 | 2025</div>
+                            <div class="text-gray-500 mt-1">iPhone 14 Pro | 15000000 | 14000000 | ...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Data Sheet -->
+                <div class="sheet-card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">Sheet 2</span>
+                        Color Data
+                    </h3>
+                    <div class="text-sm text-gray-600 mb-4">
+                        Daftar warna yang tersedia untuk semua produk
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <div class="text-xs font-mono">
+                            <div class="font-semibold mb-2">Struktur:</div>
+                            <div>Colors</div>
+                            <div class="text-gray-500 mt-1">Midnight Black, Ocean Blue, Champion Gold, ...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Memory Data Sheet -->
+                <div class="sheet-card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-sm">Sheet 3</span>
+                        Memory Data
+                    </h3>
+                    <div class="text-sm text-gray-600 mb-4">
+                        Konfigurasi RAM dan Storage yang tersedia
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <div class="text-xs font-mono">
+                            <div class="font-semibold mb-2">Struktur:</div>
+                            <div>RAM (GB) | Storage (GB)</div>
+                            <div class="text-gray-500 mt-1">4 | 64</div>
+                            <div class="text-gray-500">6 | 128</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distribution Data Sheet -->
+                <div class="sheet-card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded text-sm">Sheet 4</span>
+                        Distribution Data
+                    </h3>
+                    <div class="text-sm text-gray-600 mb-4">
+                        Jumlah penjualan per brand per tahun
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <div class="text-xs font-mono">
+                            <div class="font-semibold mb-2">Struktur:</div>
+                            <div>Brand | 2020 | 2021 | 2022 | 2023 | 2024 | 2025</div>
+                            <div class="text-gray-500 mt-1">iPhone | 50 | 60 | 70 | 80 | 90 | 50</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Discontinued Data Sheet -->
+                <div class="sheet-card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">Sheet 5</span>
+                        Discontinued Data
+                    </h3>
+                    <div class="text-sm text-gray-600 mb-4">
+                        Produk yang dihentikan dan harga second-hand
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <div class="text-xs font-mono">
+                            <div class="font-semibold mb-2">Struktur:</div>
+                            <div>Brand | Model | Last Year | Second Price Ratio</div>
+                            <div class="text-gray-500 mt-1">iPhone | 12 | 2023 | 0.7</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brand Memory Config Sheet -->
+                <div class="sheet-card p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">Sheet 6</span>
+                        Brand Memory Config
+                    </h3>
+                    <div class="text-sm text-gray-600 mb-4">
+                        Konfigurasi memori khusus per brand
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <div class="text-xs font-mono">
+                            <div class="font-semibold mb-2">Struktur:</div>
+                            <div>Brand | Memory Options</div>
+                            <div class="text-gray-500 mt-1">iPhone | 6/128, 8/256, 12/512</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Instruksi Penggunaan</h2>
+                <div class="space-y-4 text-gray-600">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">1</span>
+                        <div>
+                            <strong>Download Template:</strong> Klik tombol "Download Template Excel" di atas
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">2</span>
+                        <div>
+                            <strong>Edit Data:</strong> Buka file Excel dan edit data sesuai kebutuhan di setiap sheet
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">3</span>
+                        <div>
+                            <strong>Upload:</strong> Upload file Excel yang sudah diedit ke aplikasi Dynamic Phone Sales Data Generator
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold">4</span>
+                        <div>
+                            <strong>Generate:</strong> Klik tombol "Generate Data" untuk membuat data penjualan
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateExcel() {
+            const wb = XLSX.utils.book_new();
+
+            // Sheet 1: Price Data
+            const priceData = [
+                ["Model", "2020", "2021", "2022", "2023", "2024", "2025"],
+                ["iPhone 14 Pro", 15000000, 14000000, 13000000, 12000000, 11000000, 10000000],
+                ["iPhone 14", 12000000, 11000000, 10000000, 9000000, 8000000, 7000000],
+                ["iPhone 13", 10000000, 9000000, 8000000, 7000000, 6000000, 5000000],
+                ["Samsung Galaxy S23", 12000000, 11000000, 10000000, 9000000, 8000000, 7000000],
+                ["Samsung Galaxy A54", 5000000, 4800000, 4600000, 4400000, 4200000, 4000000],
+                ["Samsung Galaxy A34", 4000000, 3800000, 3600000, 3400000, 3200000, 3000000],
+                ["Xiaomi 13", 8000000, 7500000, 7000000, 6500000, 6000000, 5500000],
+                ["Xiaomi Redmi Note 12", 3000000, 2800000, 2600000, 2400000, 2200000, 2000000],
+                ["Xiaomi POCO X5", 3500000, 3300000, 3100000, 2900000, 2700000, 2500000],
+                ["Oppo Find X6", 10000000, 9500000, 9000000, 8500000, 8000000, 7500000],
+                ["Oppo A78", 3000000, 2800000, 2600000, 2400000, 2200000, 2000000],
+                ["Vivo V27", 6000000, 5700000, 5400000, 5100000, 4800000, 4500000],
+                ["Vivo Y27", 2500000, 2300000, 2100000, 1900000, 1700000, 1500000],
+                ["Realme GT 3", 7000000, 6500000, 6000000, 5500000, 5000000, 4500000],
+                ["Realme C55", 2000000, 1900000, 1800000, 1700000, 1600000, 1500000]
+            ];
+            const priceSheet = XLSX.utils.aoa_to_sheet(priceData);
+            XLSX.utils.book_append_sheet(wb, priceSheet, "Price Data");
+
+            // Sheet 2: Color Data
+            const colorData = [
+                ["Colors"],
+                ["Midnight Black"],
+                ["Ocean Blue"],
+                ["Champion Gold"],
+                ["Mint Green"],
+                ["Stripe Blue"],
+                ["Denim Black"],
+                ["Rose Gold"],
+                ["Silver"],
+                ["Space Gray"],
+                ["Pacific Blue"],
+                ["Purple"],
+                ["Red"],
+                ["White"],
+                ["Green"],
+                ["Yellow"]
+            ];
+            const colorSheet = XLSX.utils.aoa_to_sheet(colorData);
+            XLSX.utils.book_append_sheet(wb, colorSheet, "Color Data");
+
+            // Sheet 3: Memory Data
+            const memoryData = [
+                ["RAM (GB)", "Storage (GB)"],
+                [3, 32],
+                [4, 64],
+                [6, 128],
+                [8, 256],
+                [12, 512],
+                [16, 1024]
+            ];
+            const memorySheet = XLSX.utils.aoa_to_sheet(memoryData);
+            XLSX.utils.book_append_sheet(wb, memorySheet, "Memory Data");
+
+            // Sheet 4: Distribution Data
+            const distributionData = [
+                ["Brand", "2020", "2021", "2022", "2023", "2024", "2025"],
+                ["iPhone", 50, 60, 70, 80, 90, 50],
+                ["Samsung", 80, 90, 100, 110, 120, 80],
+                ["Xiaomi", 60, 70, 80, 90, 100, 60],
+                ["Oppo", 40, 50, 60, 70, 80, 40],
+                ["Vivo", 40, 50, 60, 70, 80, 40],
+                ["Realme", 30, 40, 50, 60, 70, 30]
+            ];
+            const distributionSheet = XLSX.utils.aoa_to_sheet(distributionData);
+            XLSX.utils.book_append_sheet(wb, distributionSheet, "Distribution Data");
+
+            // Sheet 5: Discontinued Data
+            const discontinuedData = [
+                ["Brand", "Model", "Last Year", "Second Price Ratio"],
+                ["iPhone", "12", 2023, 0.7],
+                ["iPhone", "11", 2022, 0.6],
+                ["Samsung", "Galaxy S21", 2023, 0.65],
+                ["Samsung", "Galaxy A52", 2022, 0.6],
+                ["Xiaomi", "Mi 11", 2023, 0.65],
+                ["Xiaomi", "Redmi Note 10", 2022, 0.55],
+                ["Oppo", "Find X3", 2023, 0.7],
+                ["Vivo", "V23", 2023, 0.65],
+                ["Realme", "GT 2", 2023, 0.6]
+            ];
+            const discontinuedSheet = XLSX.utils.aoa_to_sheet(discontinuedData);
+            XLSX.utils.book_append_sheet(wb, discontinuedSheet, "Discontinued Data");
+
+            // Sheet 6: Brand Memory Config
+            const brandMemoryData = [
+                ["Brand", "Memory Options"],
+                ["iPhone", "6/128, 8/256, 12/512"],
+                ["Samsung", "4/64, 6/128, 8/256, 12/512"],
+                ["Xiaomi", "3/32, 4/64, 6/128, 8/256"],
+                ["Oppo", "4/64, 6/128, 8/256"],
+                ["Vivo", "4/64, 6/128, 8/256"],
+                ["Realme", "3/32, 4/64, 6/128, 8/256"]
+            ];
+            const brandMemorySheet = XLSX.utils.aoa_to_sheet(brandMemoryData);
+            XLSX.utils.book_append_sheet(wb, brandMemorySheet, "Brand Memory Config");
+
+            // Style the sheets
+            const sheets = [priceSheet, colorSheet, memorySheet, distributionSheet, discontinuedSheet, brandMemorySheet];
+            sheets.forEach(sheet => {
+                const range = XLSX.utils.decode_range(sheet['!ref']);
+                for (let C = range.s.c; C <= range.e.c; ++C) {
+                    const headerCell = sheet[XLSX.utils.encode_cell({r: 0, c: C})];
+                    if (headerCell) {
+                        headerCell.s = {
+                            fill: { fgColor: { rgb: "4F81BD" } },
+                            font: { bold: true, color: { rgb: "FFFFFF" } },
+                            alignment: { horizontal: "center" }
+                        };
+                    }
+                }
+            });
+
+            // Generate and download the file
+            const fileName = "phone_sales_template.xlsx";
+            XLSX.writeFile(wb, fileName);
+            
+            // Show success message
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Downloaded!
+            `;
+            btn.style.background = "linear-gradient(135deg, #10B981 0%, #059669 100%)";
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

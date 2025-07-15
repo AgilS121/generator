@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phone Sales Data Generator - Improved</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .spinner {
@@ -34,7 +34,7 @@
             const [generatedData, setGeneratedData] = useState([]);
             const [isGenerating, setIsGenerating] = useState(false);
             const [salesDistribution, setSalesDistribution] = useState({
-                'iPhone': { 2020: 250, 2021: 280, 2022: 300, 2023: 320, 2024: 350, 2025: 300 },
+                'Apple': { 2020: 250, 2021: 280, 2022: 300, 2023: 320, 2024: 350, 2025: 300 },
                 'Samsung': { 2020: 300, 2021: 320, 2022: 350, 2023: 380, 2024: 400, 2025: 380 },
                 'Xiaomi': { 2020: 400, 2021: 450, 2022: 500, 2023: 550, 2024: 600, 2025: 580 },
                 'Oppo': { 2020: 200, 2021: 220, 2022: 250, 2023: 280, 2024: 300, 2025: 280 },
@@ -44,7 +44,7 @@
 
             // Data harga dari Excel (dalam rupiah)
             const priceData = {
-                'iPhone': {
+                'Apple': {
                     'iPhone 7': { 2020: 3800000, 2021: 3100000, 2022: 2600000, 2023: 2200000, 2024: 1900000, 2025: 1700000 },
                     'iPhone 7 Plus': { 2020: 4500000, 2021: 3800000, 2022: 3200000, 2023: 2800000, 2024: 2500000, 2025: 2200000 },
                     'iPhone 8': { 2020: 4800000, 2021: 4000000, 2022: 3400000, 2023: 2900000, 2024: 2600000, 2025: 2300000 },
@@ -150,21 +150,113 @@
                 }
             };
 
-            const colors = [
-                'Midnight Black', 'Ocean Blue', 'Champion Gold', 'Mint Green', 'Stripe Blue', 
-                'Denim Black', 'Sunrise Orange', 'Twilight Purple', 'Pearl White', 'Rose Gold',
-                'Cosmic Blue', 'Phantom Silver', 'Aurora Green', 'Crimson Red', 'Mystic Bronze'
-            ];
-
-            const memoryOptions = [
-                { ram: 3, storage: 32 },
-                { ram: 4, storage: 64 },
-                { ram: 4, storage: 128 },
-                { ram: 6, storage: 128 },
-                { ram: 8, storage: 256 },
-                { ram: 12, storage: 256 },
-                { ram: 12, storage: 512 }
-            ];
+            // Model configuration based on the provided table
+            const modelConfig = {
+                'Apple': {
+                    'iPhone 7': { ram: [2, 3], storage: [32, 128, 256], colors: ['Rose Gold', 'Gold', 'Silver', 'Black (Matte)', 'Jet Black (Glossy)', '(PRODUCT)RED'] },
+                    'iPhone 7 Plus': { ram: [2, 3], storage: [32, 128, 256], colors: ['Rose Gold', 'Gold', 'Silver', 'Black (Matte)', 'Jet Black (Glossy)', '(PRODUCT)RED'] },
+                    'iPhone 8': { ram: [2, 3], storage: [64, 256], colors: ['Space Gray', 'Silver', 'Gold', '(PRODUCT)RED'] },
+                    'iPhone 8 Plus': { ram: [2, 3], storage: [64, 256], colors: ['Space Gray', 'Silver', 'Gold', '(PRODUCT)RED'] },
+                    'iPhone X': { ram: [3], storage: [64, 256], colors: ['Space Gray', 'Silver'] },
+                    'iPhone XS': { ram: [4], storage: [64, 256, 512], colors: ['Space Gray', 'Silver', 'Gold'] },
+                    'iPhone XS Max': { ram: [4], storage: [64, 256, 512], colors: ['Space Gray', 'Silver', 'Gold'] },
+                    'iPhone XR': { ram: [3], storage: [64, 128, 256], colors: ['White', 'Black', 'Blue', 'Yellow', 'Coral', '(PRODUCT)RED'] },
+                    'iPhone 11': { ram: [4], storage: [64, 128, 256], colors: ['Purple', 'Yellow', 'Green', 'Black', 'White', '(PRODUCT)RED'] },
+                    'iPhone 11 Pro': { ram: [4], storage: [64, 256, 512], colors: ['Midnight Green', 'Space Gray', 'Silver', 'Gold'] },
+                    'iPhone 11 Pro Max': { ram: [4], storage: [64, 256, 512], colors: ['Midnight Green', 'Space Gray', 'Silver', 'Gold'] },
+                    'iPhone 12 Mini': { ram: [4], storage: [64, 128, 256], colors: ['Blue', 'Green', '(PRODUCT)RED', 'White', 'Black', 'Purple'] },
+                    'iPhone 12': { ram: [4], storage: [64, 128, 256], colors: ['Blue', 'Green', '(PRODUCT)RED', 'White', 'Black', 'Purple'] },
+                    'iPhone 12 Pro': { ram: [6], storage: [128, 256, 512], colors: ['Pacific Blue', 'Gold', 'Graphite', 'Silver'] },
+                    'iPhone 12 Pro Max': { ram: [6], storage: [128, 256, 512], colors: ['Pacific Blue', 'Gold', 'Graphite', 'Silver'] },
+                    'iPhone 13 Mini': { ram: [4], storage: [128, 256, 512], colors: ['Pink', 'Blue', 'Midnight', 'Starlight', '(PRODUCT)RED', 'Green'] },
+                    'iPhone 13': { ram: [4], storage: [128, 256, 512], colors: ['Pink', 'Blue', 'Midnight', 'Starlight', '(PRODUCT)RED', 'Green'] },
+                    'iPhone 13 Pro': { ram: [6], storage: [128, 256, 512, 1000], colors: ['Sierra Blue', 'Graphite', 'Gold', 'Silver', 'Alpine Green'] },
+                    'iPhone 13 Pro Max': { ram: [6], storage: [128, 256, 512, 1000], colors: ['Sierra Blue', 'Graphite', 'Gold', 'Silver', 'Alpine Green'] },
+                    'iPhone 14': { ram: [6], storage: [128, 256, 512], colors: ['Blue', 'Purple', 'Midnight', 'Starlight', '(PRODUCT)RED', 'Yellow'] },
+                    'iPhone 14 Pro': { ram: [6], storage: [128, 256, 512, 1000], colors: ['Deep Purple', 'Gold', 'Silver', 'Space Black'] },
+                    'iPhone 14 Pro Max': { ram: [6], storage: [128, 256, 512, 1000], colors: ['Deep Purple', 'Gold', 'Silver', 'Space Black'] },
+                    'iPhone 15': { ram: [6], storage: [128, 256, 512], colors: ['Blue', 'Pink', 'Yellow', 'Green', 'Black'] },
+                    'iPhone 15 Plus': { ram: [6], storage: [128, 256, 512], colors: ['Blue', 'Pink', 'Yellow', 'Green', 'Black'] },
+                    'iPhone 15 Pro': { ram: [8], storage: [128, 256, 512, 1000], colors: ['Natural Titanium', 'Blue Titanium', 'White Titanium', 'Black Titanium'] },
+                    'iPhone 15 Pro Max': { ram: [8], storage: [128, 256, 512, 1000], colors: ['Natural Titanium', 'Blue Titanium', 'White Titanium', 'Black Titanium'] },
+                    'iPhone 16': { ram: [8], storage: [128, 256, 512], colors: ['Blue', 'Pink', 'Yellow', 'Green', 'Black', 'White', 'Purple'] },
+                    'iPhone 16 Plus': { ram: [8], storage: [128, 256, 512], colors: ['Blue', 'Pink', 'Yellow', 'Green', 'Black', 'White', 'Purple'] },
+                    'iPhone 16 Pro': { ram: [8], storage: [256, 512, 1000], colors: ['Space Black (Titanium)', 'White (Titanium)', 'Desert/Rose (Titanium)', 'Natural (Titanium)'] },
+                    'iPhone 16 Pro Max': { ram: [8], storage: [256, 512, 1000], colors: ['Space Black (Titanium)', 'White (Titanium)', 'Desert/Rose (Titanium)', 'Natural (Titanium)'] }
+                },
+                'Samsung': {
+                    'Galaxy A51': { ram: [4, 6, 8], storage: [64, 128], colors: ['Prism Crush Black', 'Prism Crush White', 'Prism Crush Blue', 'Prism Crush Pink'] },
+                    'Galaxy M21': { ram: [4, 6], storage: [64, 128], colors: ['Midnight Blue', 'Raven Black'] },
+                    'Galaxy S20 FE': { ram: [6, 8], storage: [128, 256], colors: ['Cloud Navy', 'Cloud Lavender', 'Cloud Mint', 'Cloud Red', 'Cloud White'] },
+                    'Galaxy A12': { ram: [3, 4, 6], storage: [32, 64, 128], colors: ['Black', 'White', 'Blue'] },
+                    'Galaxy A52': { ram: [6, 8], storage: [128, 256], colors: ['Awesome Black', 'Awesome White', 'Awesome Violet', 'Awesome Blue'] },
+                    'Galaxy A32': { ram: [6, 8], storage: [128], colors: ['Awesome Black', 'Awesome White', 'Awesome Blue', 'Awesome Violet'] },
+                    'Galaxy S21 FE': { ram: [6, 8], storage: [128, 256], colors: ['White', 'Graphite', 'Lavender', 'Olive'] },
+                    'Galaxy Z Flip3': { ram: [8], storage: [128, 256], colors: ['Cream', 'Phantom Black', 'Green', 'Lavender'] },
+                    'Galaxy A03': { ram: [2, 3, 4], storage: [32, 64, 128], colors: ['Black', 'Blue', 'Red'] },
+                    'Galaxy A33 5G': { ram: [6, 8], storage: [128, 256], colors: ['Awesome Black', 'Awesome White', 'Awesome Blue', 'Awesome Peach'] },
+                    'Galaxy A23': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'Galaxy S22 Ultra': { ram: [8, 12], storage: [128, 256, 512, 1000], colors: ['Burgundy', 'Phantom Black', 'Phantom White', 'Green'] },
+                    'Galaxy Z Flip4': { ram: [8], storage: [128, 256, 512], colors: ['Bora Purple', 'Graphite', 'Pink Gold', 'Blue'] },
+                    'Galaxy A14': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'Galaxy A54 5G': { ram: [6, 8], storage: [128, 256], colors: ['Awesome Lime', 'Awesome Graphite', 'Awesome Violet', 'Awesome White'] },
+                    'Galaxy S23 Ultra': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'Galaxy A15': { ram: [], storage: [], colors: [] } // Tidak ada data RAM/storage di tabel, skip
+                },
+                'Xiaomi': {
+                    'Redmi Note 8': { ram: [3, 4, 6], storage: [32, 64, 128], colors: ['Neptune Blue', 'Moonlight White', 'Space Black'] },
+                    'Redmi 9A': { ram: [2, 3], storage: [32], colors: ['Granite Gray', 'Peacock Green', 'Sky Blue'] },
+                    'Redmi Note 9': { ram: [4, 6], storage: [64, 128], colors: ['Forest Green', 'Midnight Grey', 'Polar White'] },
+                    'Poco X3 NFC': { ram: [6, 8], storage: [64, 128], colors: ['Shadow Gray', 'Cobalt Blue'] },
+                    'Redmi Note 10': { ram: [4, 6], storage: [64, 128], colors: ['Onyx Gray', 'Pebble White', 'Lake Green'] },
+                    'Redmi Note 10 Pro': { ram: [6, 8], storage: [64, 128], colors: ['Onyx Gray', 'Glacier Blue', 'Gradient Bronze'] },
+                    'Redmi 10C': { ram: [3, 4], storage: [64, 128], colors: ['Graphite Gray', 'Ocean Blue', 'Mint Green'] },
+                    'Redmi Note 11': { ram: [4, 6], storage: [128], colors: ['Graphite Gray', 'Twilight Blue', 'Star Blue'] },
+                    'Redmi Note 11 Pro': { ram: [6, 8], storage: [128], colors: ['Graphite Gray', 'Polar White', 'Star Blue'] },
+                    'Redmi 12C': { ram: [3, 4, 6], storage: [32, 64, 128], colors: ['Graphite Gray', 'Ocean Blue'] },
+                    'Redmi Note 12': { ram: [4, 6, 8], storage: [128], colors: ['Onyx Gray', 'Mint Green', 'Ice Blue'] },
+                    'Poco F5': { ram: [8, 12], storage: [256], colors: ['White', 'Blue', 'Black'] },
+                    'Redmi 13C': { ram: [6, 8], storage: [128, 256], colors: ['Midnight Black', 'Clover Green', 'Glacier White'] },
+                    'Redmi Note 13': { ram: [8], storage: [256], colors: ['Midnight Black', 'Mint Green', 'Ice Blue'] },
+                    'Redmi Note 13 Pro 5G': { ram: [8], storage: [256], colors: ['Midnight Black', 'Aurora Purple', 'Ocean Teal'] }
+                },
+                'Oppo': {
+                    'A53': { ram: [4, 6], storage: [64, 128], colors: ['Fancy Blue', 'Electric Black'] },
+                    'A16': { ram: [3, 4], storage: [32, 64], colors: ['Pearl Blue', 'Space Silver', 'Crystal Black'] },
+                    'Reno6': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'A57': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'A77s': { ram: [8], storage: [128], colors: ['Sunset Orange', 'Starry Black'] },
+                    'Reno8 T': { ram: [8], storage: [128, 256], colors: ['Sunset Orange', 'Midnight Black'] },
+                    'A78 5G': { ram: [8], storage: [128], colors: ['Glowing Black', 'Glowing Purple'] },
+                    'Reno10': { ram: [8], storage: [256], colors: ['Silvery Grey', 'Ice Blue'] },
+                    'A18': { ram: [4], storage: [128], colors: ['Glowing Black', 'Glowing Blue'] },
+                    'A58': { ram: [6, 8], storage: [128], colors: ['Dazzling Green', 'Glowing Black'] }
+                },
+                'Vivo': {
+                    'Y20s': { ram: [4, 6, 8], storage: [128], colors: ['Purist Blue', 'Obsidian Black'] },
+                    'Y21s': { ram: [4, 5], storage: [64, 128], colors: ['Midnight Blue', 'Pearl White'] },
+                    'V23e': { ram: [8], storage: [128], colors: ['Moonlight Shadow', 'Sunshine Coast'] },
+                    'Y22': { ram: [4, 6], storage: [64, 128], colors: ['Starlit Blue', 'Summer Cyan', 'Metaverse Green'] },
+                    'Y35': { ram: [8], storage: [128], colors: ['Agate Black', 'Dawn Gold'] },
+                    'V25e': { ram: [8], storage: [128, 256], colors: ['Diamond Black', 'Sunrise Gold'] },
+                    'Y17s': { ram: [4, 6], storage: [64, 128], colors: ['Glitter Purple', 'Forest Green'] },
+                    'V27 5G': { ram: [8, 12], storage: [128, 256], colors: ['Noble Black', 'Flowing Gold'] },
+                    'V29e': { ram: [8], storage: [256], colors: ['Crystal Blue', 'Forest Black'] },
+                    'Y100 5G': { ram: [], storage: [], colors: [] } // Tidak ada data RAM/storage di tabel, skip
+                },
+                'Realme': {
+                    'C15': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    '8': { ram: [4, 6, 8], storage: [128], colors: ['Cyber Silver', 'Cyber Black'] },
+                    'C35': { ram: [4], storage: [64, 128], colors: ['Glowing Green', 'Glowing Black'] },
+                    'Narzo 50': { ram: [4, 6], storage: [64, 128], colors: ['Speed Black', 'Speed Blue'] },
+                    '9 Pro': { ram: [6, 8], storage: [128], colors: ['Sunrise Blue', 'Aurora Green'] },
+                    'C55': { ram: [6, 8], storage: [128, 256], colors: ['Sunshower', 'Rainy Night'] },
+                    '10 Pro+': { ram: [6, 8, 12], storage: [128, 256], colors: ['Hyperspace', 'Dark Matter', 'Nebula Blue'] },
+                    'C53': { ram: [6], storage: [128], colors: ['Champion Gold', 'Mighty Black'] },
+                    '11 Pro': { ram: [8], storage: [128, 256, 512], colors: ['Sunrise Beige', 'Oasis Green', 'Astral Black'] },
+                    'C67': { ram: [8], storage: [128, 256], colors: ['Sunny Oasis', 'Black Rock'] }
+                }
+            };
 
             const generateRandomDate = (year) => {
                 const startDate = new Date(year, 0, 1);
@@ -188,23 +280,26 @@
                 }
                 
                 const launchPrice = brandData[model][year];
-                // Retail markup 15-25% dari harga launch
                 const markupMultiplier = 1.15 + Math.random() * 0.1;
                 const retailPrice = launchPrice * markupMultiplier;
-                
-                // Variasi harga ±5%
                 const priceVariation = 0.95 + Math.random() * 0.1;
-                
                 return Math.round(retailPrice * priceVariation / 50000) * 50000;
             };
 
             const getAvailableModels = (brand, year) => {
                 const brandData = priceData[brand];
                 if (!brandData) return [];
-                
                 return Object.keys(brandData).filter(model => 
                     brandData[model][year] !== undefined
                 );
+            };
+
+            const getModelConfig = (brand, model) => {
+                const config = modelConfig[brand]?.[model];
+                if (!config || !config.ram.length || !config.storage.length || !config.colors.length) {
+                    return null; // Skip models with incomplete config
+                }
+                return config;
             };
 
             const updateSalesDistribution = (brand, year, value) => {
@@ -223,13 +318,9 @@
                 setTimeout(() => {
                     const data = [];
                     const yearlyData = {};
-                    
-                    // Group by year untuk distribusi
                     const years = [2020, 2021, 2022, 2023, 2024, 2025];
                     years.forEach(year => {
                         yearlyData[year] = [];
-                        
-                        // Generate data untuk setiap brand berdasarkan distribusi
                         Object.keys(salesDistribution).forEach(brand => {
                             const yearlyCount = salesDistribution[brand][year] || 0;
                             const availableModels = getAvailableModels(brand, year);
@@ -238,13 +329,17 @@
                             
                             for (let i = 0; i < yearlyCount; i++) {
                                 const model = availableModels[Math.floor(Math.random() * availableModels.length)];
-                                const color = colors[Math.floor(Math.random() * colors.length)];
-                                const memoryConfig = memoryOptions[Math.floor(Math.random() * memoryOptions.length)];
+                                const config = getModelConfig(brand, model);
+                                if (!config) continue; // Skip if no valid config
+                                
+                                const ram = config.ram[Math.floor(Math.random() * config.ram.length)];
+                                const storage = config.storage[Math.floor(Math.random() * config.storage.length)];
+                                const color = config.colors[Math.floor(Math.random() * config.colors.length)];
                                 const date = generateRandomDate(year);
                                 const price = getRetailPrice(brand, model, year);
                                 
                                 if (price > 0) {
-                                    const fullModel = `${model} ${memoryConfig.ram}/${memoryConfig.storage}`;
+                                    const fullModel = `${model} ${ram}/${storage}`;
                                     const mobile = `${brand} ${fullModel} ${color}`;
                                     
                                     yearlyData[year].push({
@@ -254,8 +349,8 @@
                                         'Selling Price': price,
                                         Mobile: mobile,
                                         Date: formatDate(date),
-                                        Memory: memoryConfig.ram,
-                                        Storage: memoryConfig.storage,
+                                        Memory: ram,
+                                        Storage: storage,
                                         Year: year
                                     });
                                 }
@@ -263,15 +358,12 @@
                         });
                     });
                     
-                    // Flatten dan sort semua data
                     const allData = [];
                     years.forEach(year => {
                         allData.push(...yearlyData[year]);
                     });
                     
                     allData.sort((a, b) => new Date(a.Date.split('/').reverse().join('-')) - new Date(b.Date.split('/').reverse().join('-')));
-                    
-                    // Ambil sesuai rowCount
                     const finalData = allData.slice(0, rowCount);
                     
                     setGeneratedData(finalData);
@@ -378,7 +470,7 @@
                                 <li>• Harga retail mengikuti launching price dari Excel</li>
                                 <li>• Model HP sesuai dengan yang ada di Excel</li>
                                 <li>• Distribusi penjualan per brand dapat disesuaikan</li>
-                                <li>• Variasi warna dan konfigurasi memori</li>
+                                <li>• Variasi warna dan konfigurasi memori sesuai spesifikasi</li>
                                 <li>• Format tanggal Indonesia (DD/MM/YYYY)</li>
                                 <li>• Rentang data dari 2020-2025 (hingga Juni)</li>
                             </ul>
@@ -485,6 +577,5 @@
     <footer style="text-align: center; margin-top: 50px;">
         <small>Created by Agil Pamungkas • © 2025</small>
     </footer>
-
 </body>
 </html>
