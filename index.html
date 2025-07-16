@@ -34,12 +34,54 @@
             const [generatedData, setGeneratedData] = useState([]);
             const [isGenerating, setIsGenerating] = useState(false);
             const [salesDistribution, setSalesDistribution] = useState({
-                'Apple': { 2020: 250, 2021: 280, 2022: 300, 2023: 320, 2024: 350, 2025: 300 },
-                'Samsung': { 2020: 300, 2021: 320, 2022: 350, 2023: 380, 2024: 400, 2025: 380 },
-                'Xiaomi': { 2020: 400, 2021: 450, 2022: 500, 2023: 550, 2024: 600, 2025: 580 },
-                'Oppo': { 2020: 200, 2021: 220, 2022: 250, 2023: 280, 2024: 300, 2025: 280 },
-                'Vivo': { 2020: 180, 2021: 200, 2022: 230, 2023: 260, 2024: 290, 2025: 270 },
-                'Realme': { 2020: 150, 2021: 180, 2022: 220, 2023: 250, 2024: 280, 2025: 150 }
+                'Apple': {
+                    2020: {1: 20, 2: 20, 3: 20, 4: 20, 5: 20, 6: 20, 7: 20, 8: 20, 9: 20, 10: 20, 11: 20, 12: 20},
+                    2021: {1: 23, 2: 23, 3: 23, 4: 23, 5: 23, 6: 23, 7: 23, 8: 23, 9: 23, 10: 23, 11: 23, 12: 23},
+                    2022: {1: 25, 2: 25, 3: 25, 4: 25, 5: 25, 6: 25, 7: 25, 8: 25, 9: 25, 10: 25, 11: 25, 12: 25},
+                    2023: {1: 27, 2: 27, 3: 27, 4: 27, 5: 27, 6: 27, 7: 27, 8: 27, 9: 27, 10: 27, 11: 27, 12: 26},
+                    2024: {1: 29, 2: 29, 3: 29, 4: 29, 5: 29, 6: 29, 7: 29, 8: 29, 9: 29, 10: 29, 11: 29, 12: 29},
+                    2025: {1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
+                },
+                'Samsung': {
+                    2020: {1: 25, 2: 25, 3: 25, 4: 25, 5: 25, 6: 25, 7: 25, 8: 25, 9: 25, 10: 25, 11: 25, 12: 25},
+                    2021: {1: 27, 2: 27, 3: 27, 4: 27, 5: 27, 6: 27, 7: 27, 8: 27, 9: 27, 10: 27, 11: 27, 12: 26},
+                    2022: {1: 29, 2: 29, 3: 29, 4: 29, 5: 29, 6: 29, 7: 29, 8: 29, 9: 29, 10: 29, 11: 29, 12: 29},
+                    2023: {1: 32, 2: 32, 3: 32, 4: 32, 5: 32, 6: 32, 7: 32, 8: 32, 9: 32, 10: 32, 11: 32, 12: 31},
+                    2024: {1: 33, 2: 33, 3: 33, 4: 33, 5: 33, 6: 33, 7: 33, 8: 33, 9: 33, 10: 33, 11: 33, 12: 33},
+                    2025: {1: 63, 2: 63, 3: 63, 4: 63, 5: 63, 6: 63, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
+                },
+                'Xiaomi': {
+                    2020: {1: 33, 2: 33, 3: 33, 4: 33, 5: 33, 6: 33, 7: 33, 8: 33, 9: 33, 10: 33, 11: 33, 12: 33},
+                    2021: {1: 37, 2: 37, 3: 37, 4: 37, 5: 37, 6: 37, 7: 37, 8: 37, 9: 37, 10: 37, 11: 37, 12: 37},
+                    2022: {1: 42, 2: 42, 3: 42, 4: 42, 5: 42, 6: 42, 7: 42, 8: 42, 9: 42, 10: 42, 11: 42, 12: 41},
+                    2023: {1: 46, 2: 46, 3: 46, 4: 46, 5: 46, 6: 46, 7: 46, 8: 46, 9: 46, 10: 46, 11: 46, 12: 45},
+                    2024: {1: 50, 2: 50, 3: 50, 4: 50, 5: 50, 6: 50, 7: 50, 8: 50, 9: 50, 10: 50, 11: 50, 12: 50},
+                    2025: {1: 97, 2: 97, 3: 97, 4: 97, 5: 97, 6: 96, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
+                },
+                'Oppo': {
+                    2020: {1: 17, 2: 17, 3: 17, 4: 17, 5: 17, 6: 17, 7: 17, 8: 17, 9: 17, 10: 17, 11: 17, 12: 16},
+                    2021: {1: 18, 2: 18, 3: 18, 4: 18, 5: 18, 6: 18, 7: 18, 8: 18, 9: 18, 10: 18, 11: 18, 12: 18},
+                    2022: {1: 21, 2: 21, 3: 21, 4: 21, 5: 21, 6: 21, 7: 21, 8: 21, 9: 21, 10: 21, 11: 21, 12: 20},
+                    2023: {1: 23, 2: 23, 3: 23, 4: 23, 5: 23, 6: 23, 7: 23, 8: 23, 9: 23, 10: 23, 11: 23, 12: 23},
+                    2024: {1: 25, 2: 25, 3: 25, 4: 25, 5: 25, 6: 25, 7: 25, 8: 25, 9: 25, 10: 25, 11: 25, 12: 25},
+                    2025: {1: 47, 2: 47, 3: 47, 4: 47, 5: 47, 6: 47, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
+                },
+                'Vivo': {
+                    2020: {1: 15, 2: 15, 3: 15, 4: 15, 5: 15, 6: 15, 7: 15, 8: 15, 9: 15, 10: 15, 11: 15, 12: 15},
+                    2021: {1: 17, 2: 17, 3: 17, 4: 17, 5: 17, 6: 17, 7: 17, 8: 17, 9: 17, 10: 17, 11: 17, 12: 16},
+                    2022: {1: 19, 2: 19, 3: 19, 4: 19, 5: 19, 6: 19, 7: 19, 8: 19, 9: 19, 10: 19, 11: 19, 12: 19},
+                    2023: {1: 22, 2: 22, 3: 22, 4: 22, 5: 22, 6: 22, 7: 22, 8: 22, 9: 22, 10: 22, 11: 22, 12: 21},
+                    2024: {1: 24, 2: 24, 3: 24, 4: 24, 5: 24, 6: 24, 7: 24, 8: 24, 9: 24, 10: 24, 11: 24, 12: 24},
+                    2025: {1: 45, 2: 45, 3: 45, 4: 45, 5: 45, 6: 45, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
+                },
+                'Realme': {
+                    2020: {1: 13, 2: 13, 3: 13, 4: 13, 5: 13, 6: 13, 7: 13, 8: 13, 9: 13, 10: 13, 11: 13, 12: 12},
+                    2021: {1: 15, 2: 15, 3: 15, 4: 15, 5: 15, 6: 15, 7: 15, 8: 15, 9: 15, 10: 15, 11: 15, 12: 15},
+                    2022: {1: 18, 2: 18, 3: 18, 4: 18, 5: 18, 6: 18, 7: 18, 8: 18, 9: 18, 10: 18, 11: 18, 12: 18},
+                    2023: {1: 21, 2: 21, 3: 21, 4: 21, 5: 21, 6: 21, 7: 21, 8: 21, 9: 21, 10: 21, 11: 21, 12: 20},
+                    2024: {1: 23, 2: 23, 3: 23, 4: 23, 5: 23, 6: 23, 7: 23, 8: 23, 9: 23, 10: 23, 11: 23, 12: 23},
+                    2025: {1: 25, 2: 25, 3: 25, 4: 25, 5: 25, 6: 25, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0}
+                }
             });
 
             // Data harga dari Excel (dalam rupiah)
@@ -195,13 +237,13 @@
                     'Galaxy Z Flip3': { ram: [8], storage: [128, 256], colors: ['Cream', 'Phantom Black', 'Green', 'Lavender'] },
                     'Galaxy A03': { ram: [2, 3, 4], storage: [32, 64, 128], colors: ['Black', 'Blue', 'Red'] },
                     'Galaxy A33 5G': { ram: [6, 8], storage: [128, 256], colors: ['Awesome Black', 'Awesome White', 'Awesome Blue', 'Awesome Peach'] },
-                    'Galaxy A23': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'Galaxy A23': { ram: [], storage: [], colors: [] },
                     'Galaxy S22 Ultra': { ram: [8, 12], storage: [128, 256, 512, 1000], colors: ['Burgundy', 'Phantom Black', 'Phantom White', 'Green'] },
                     'Galaxy Z Flip4': { ram: [8], storage: [128, 256, 512], colors: ['Bora Purple', 'Graphite', 'Pink Gold', 'Blue'] },
-                    'Galaxy A14': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'Galaxy A14': { ram: [], storage: [], colors: [] },
                     'Galaxy A54 5G': { ram: [6, 8], storage: [128, 256], colors: ['Awesome Lime', 'Awesome Graphite', 'Awesome Violet', 'Awesome White'] },
-                    'Galaxy S23 Ultra': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
-                    'Galaxy A15': { ram: [], storage: [], colors: [] } // Tidak ada data RAM/storage di tabel, skip
+                    'Galaxy S23 Ultra': { ram: [], storage: [], colors: [] },
+                    'Galaxy A15': { ram: [], storage: [], colors: [] }
                 },
                 'Xiaomi': {
                     'Redmi Note 8': { ram: [3, 4, 6], storage: [32, 64, 128], colors: ['Neptune Blue', 'Moonlight White', 'Space Black'] },
@@ -223,8 +265,8 @@
                 'Oppo': {
                     'A53': { ram: [4, 6], storage: [64, 128], colors: ['Fancy Blue', 'Electric Black'] },
                     'A16': { ram: [3, 4], storage: [32, 64], colors: ['Pearl Blue', 'Space Silver', 'Crystal Black'] },
-                    'Reno6': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
-                    'A57': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'Reno6': { ram: [], storage: [], colors: [] },
+                    'A57': { ram: [], storage: [], colors: [] },
                     'A77s': { ram: [8], storage: [128], colors: ['Sunset Orange', 'Starry Black'] },
                     'Reno8 T': { ram: [8], storage: [128, 256], colors: ['Sunset Orange', 'Midnight Black'] },
                     'A78 5G': { ram: [8], storage: [128], colors: ['Glowing Black', 'Glowing Purple'] },
@@ -242,10 +284,10 @@
                     'Y17s': { ram: [4, 6], storage: [64, 128], colors: ['Glitter Purple', 'Forest Green'] },
                     'V27 5G': { ram: [8, 12], storage: [128, 256], colors: ['Noble Black', 'Flowing Gold'] },
                     'V29e': { ram: [8], storage: [256], colors: ['Crystal Blue', 'Forest Black'] },
-                    'Y100 5G': { ram: [], storage: [], colors: [] } // Tidak ada data RAM/storage di tabel, skip
+                    'Y100 5G': { ram: [], storage: [], colors: [] }
                 },
                 'Realme': {
-                    'C15': { ram: [], storage: [], colors: [] }, // Tidak ada data RAM/storage di tabel, skip
+                    'C15': { ram: [], storage: [], colors: [] },
                     '8': { ram: [4, 6, 8], storage: [128], colors: ['Cyber Silver', 'Cyber Black'] },
                     'C35': { ram: [4], storage: [64, 128], colors: ['Glowing Green', 'Glowing Black'] },
                     'Narzo 50': { ram: [4, 6], storage: [64, 128], colors: ['Speed Black', 'Speed Blue'] },
@@ -258,9 +300,9 @@
                 }
             };
 
-            const generateRandomDate = (year) => {
-                const startDate = new Date(year, 0, 1);
-                const endDate = year === 2025 ? new Date(2025, 5, 30) : new Date(year, 11, 31);
+            const generateRandomDate = (year, month) => {
+                const startDate = new Date(year, month - 1, 1);
+                const endDate = year === 2025 && month === 6 ? new Date(2025, 5, 30) : new Date(year, month, 0);
                 const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
                 return new Date(randomTime);
             };
@@ -297,17 +339,20 @@
             const getModelConfig = (brand, model) => {
                 const config = modelConfig[brand]?.[model];
                 if (!config || !config.ram.length || !config.storage.length || !config.colors.length) {
-                    return null; // Skip models with incomplete config
+                    return null;
                 }
                 return config;
             };
 
-            const updateSalesDistribution = (brand, year, value) => {
+            const updateSalesDistribution = (brand, year, month, value) => {
                 setSalesDistribution(prev => ({
                     ...prev,
                     [brand]: {
                         ...prev[brand],
-                        [year]: parseInt(value)
+                        [year]: {
+                            ...prev[brand][year],
+                            [month]: parseInt(value)
+                        }
                     }
                 }));
             };
@@ -322,39 +367,41 @@
                     years.forEach(year => {
                         yearlyData[year] = [];
                         Object.keys(salesDistribution).forEach(brand => {
-                            const yearlyCount = salesDistribution[brand][year] || 0;
-                            const availableModels = getAvailableModels(brand, year);
-                            
-                            if (availableModels.length === 0) return;
-                            
-                            for (let i = 0; i < yearlyCount; i++) {
-                                const model = availableModels[Math.floor(Math.random() * availableModels.length)];
-                                const config = getModelConfig(brand, model);
-                                if (!config) continue; // Skip if no valid config
+                            const months = year === 2025 ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+                            months.forEach(month => {
+                                const monthlyCount = salesDistribution[brand][year]?.[month] || 0;
+                                const availableModels = getAvailableModels(brand, year);
+                                if (availableModels.length === 0) return;
                                 
-                                const ram = config.ram[Math.floor(Math.random() * config.ram.length)];
-                                const storage = config.storage[Math.floor(Math.random() * config.storage.length)];
-                                const color = config.colors[Math.floor(Math.random() * config.colors.length)];
-                                const date = generateRandomDate(year);
-                                const price = getRetailPrice(brand, model, year);
-                                
-                                if (price > 0) {
-                                    const fullModel = `${model} ${ram}/${storage}`;
-                                    const mobile = `${brand} ${fullModel} ${color}`;
+                                for (let i = 0; i < monthlyCount; i++) {
+                                    const model = availableModels[Math.floor(Math.random() * availableModels.length)];
+                                    const config = getModelConfig(brand, model);
+                                    if (!config) continue;
                                     
-                                    yearlyData[year].push({
-                                        Brand: brand,
-                                        Model: model,
-                                        Color: color,
-                                        'Selling Price': price,
-                                        Mobile: mobile,
-                                        Date: formatDate(date),
-                                        Memory: ram,
-                                        Storage: storage,
-                                        Year: year
-                                    });
+                                    const ram = config.ram[Math.floor(Math.random() * config.ram.length)];
+                                    const storage = config.storage[Math.floor(Math.random() * config.storage.length)];
+                                    const color = config.colors[Math.floor(Math.random() * config.colors.length)];
+                                    const date = generateRandomDate(year, month);
+                                    const price = getRetailPrice(brand, model, year);
+                                    
+                                    if (price > 0) {
+                                        const fullModel = `${model} ${ram}/${storage}`;
+                                        const mobile = `${brand} ${fullModel} ${color}`;
+                                        
+                                        yearlyData[year].push({
+                                            Brand: brand,
+                                            Model: model,
+                                            Color: color,
+                                            'Selling Price': price,
+                                            Mobile: mobile,
+                                            Date: formatDate(date),
+                                            Memory: ram,
+                                            Storage: storage,
+                                            Year: year
+                                        });
+                                    }
                                 }
-                            }
+                            });
                         });
                     });
                     
@@ -437,26 +484,31 @@
                         </div>
 
                         <div className="bg-gray-50 p-4 rounded-lg">
-                            <h3 className="font-semibold mb-2">Sales Distribution per Year</h3>
+                            <h3 className="font-semibold mb-2">Sales Distribution per Month</h3>
                             <div className="space-y-2 max-h-64 overflow-y-auto">
                                 {Object.keys(salesDistribution).map(brand => (
                                     <div key={brand} className="border-b pb-2">
                                         <div className="font-medium text-sm mb-1">{brand}</div>
-                                        <div className="grid grid-cols-3 gap-1">
-                                            {[2020, 2021, 2022, 2023, 2024, 2025].map(year => (
-                                                <div key={year} className="text-xs">
-                                                    <label className="block">{year}</label>
-                                                    <input
-                                                        type="number"
-                                                        value={salesDistribution[brand][year]}
-                                                        onChange={(e) => updateSalesDistribution(brand, year, e.target.value)}
-                                                        className="w-full px-1 py-1 border rounded text-xs"
-                                                        min="0"
-                                                        max="1000"
-                                                    />
+                                        {[2020, 2021, 2022, 2023, 2024, 2025].map(year => (
+                                            <div key={year} className="mb-2">
+                                                <div className="font-medium text-xs mb-1">{year}</div>
+                                                <div className="grid grid-cols-3 gap-1">
+                                                    {(year === 2025 ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).map(month => (
+                                                        <div key={month} className="text-xs">
+                                                            <label className="block">Month {month}</label>
+                                                            <input
+                                                                type="number"
+                                                                value={salesDistribution[brand][year]?.[month] || 0}
+                                                                onChange={(e) => updateSalesDistribution(brand, year, month, e.target.value)}
+                                                                className="w-full px-1 py-1 border rounded text-xs"
+                                                                min="0"
+                                                                max="100"
+                                                            />
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            ))}
-                                        </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 ))}
                             </div>
@@ -469,7 +521,7 @@
                             <ul className="text-sm text-gray-600 space-y-1">
                                 <li>• Harga retail mengikuti launching price dari Excel</li>
                                 <li>• Model HP sesuai dengan yang ada di Excel</li>
-                                <li>• Distribusi penjualan per brand dapat disesuaikan</li>
+                                <li>• Distribusi penjualan per brand dapat disesuaikan per bulan</li>
                                 <li>• Variasi warna dan konfigurasi memori sesuai spesifikasi</li>
                                 <li>• Format tanggal Indonesia (DD/MM/YYYY)</li>
                                 <li>• Rentang data dari 2020-2025 (hingga Juni)</li>
